@@ -49,7 +49,6 @@ public class KotlinLearnDetailActivity extends AppCompatActivity {
         textItem = (TextView) findViewById(R.id.textItem);
 
         getJsoup();
-        int i;
     }
 
 
