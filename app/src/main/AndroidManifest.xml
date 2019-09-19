@@ -23,9 +23,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.DialyDetailActivity"/>
-        <activity android:name=".activity.KotlinLearn"
+        <activity android:name=".activity.KotlinLearnActivity"
             android:label="kotlin"/>
         <activity android:name=".activity.KotlinLearnDetailActivity"/>
+        <activity android:name=".activity.androidbasiclearn.AndroidBasicActivity"/>
+        <activity android:name=".activity.androidmianshi.AndroidMSActivity"
+            android:label="面試題"/>
     </application>
 
 </manifest>

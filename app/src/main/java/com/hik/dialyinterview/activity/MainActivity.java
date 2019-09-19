@@ -21,6 +21,8 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 import com.hik.dialyinterview.R;
+import com.hik.dialyinterview.activity.androidbasiclearn.AndroidBasicActivity;
+import com.hik.dialyinterview.activity.androidmianshi.AndroidMSActivity;
 import com.hik.dialyinterview.bean.DialyBean;
 import com.hik.dialyinterview.db.DialyService;
 import com.hik.dialyinterview.util.PreferenceUtil;
@@ -332,12 +334,14 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            startActivity(new Intent(this, KotlinLearn.class));
+            startActivity(new Intent(this, KotlinLearnActivity.class));
         } else if (id == R.id.nav_gallery) {
-            showDialog(true, "aaaa");
+
+            startActivity(new Intent(this, AndroidBasicActivity.class));
         } else if (id == R.id.nav_slideshow) {
 
-            showDialog(false, "bbb");
+            startActivity(new Intent(this, AndroidMSActivity.class));
+
         } else if (id == R.id.nav_tools) {
 
         } else if (id == R.id.nav_share) {

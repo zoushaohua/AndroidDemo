@@ -17,9 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.hik.dialyinterview.R;
-import com.hik.dialyinterview.bean.DialyBean;
 import com.hik.dialyinterview.bean.KotlinBean;
-import com.hik.dialyinterview.db.DialyService;
 import com.hik.dialyinterview.db.KotlinService;
 import com.hik.dialyinterview.view.ScaleInTopAnimator;
 import com.hik.dialyinterview.view.onLoadMoreListener;
@@ -34,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class KotlinLearn extends AppCompatActivity {
+public class KotlinLearnActivity extends AppCompatActivity {
     List<KotlinBean> kotlinBeanList;
     RecyclerView recyclerView;
     SwipeRefreshLayout refreshLayout;
@@ -169,7 +167,7 @@ public class KotlinLearn extends AppCompatActivity {
                 viewHolder.textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(KotlinLearn.this, KotlinLearnDetailActivity.class);
+                        Intent intent = new Intent(KotlinLearnActivity.this, KotlinLearnDetailActivity.class);
                         intent.putExtra("url", kotlinBeanList.get(position).getUrl());
                         intent.putExtra("title", kotlinBeanList.get(position).getTitle());
                         startActivity(intent);
