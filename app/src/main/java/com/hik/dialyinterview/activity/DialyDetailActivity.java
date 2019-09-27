@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.hik.dialyinterview.BaseActivity;
 import com.hik.dialyinterview.R;
 import com.hik.dialyinterview.bean.DetailBean;
 import com.hik.dialyinterview.db.DetailService;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class DialyDetailActivity extends AppCompatActivity {
+public class DialyDetailActivity extends BaseActivity {
     String url;
     List<DetailBean> dialyBeanList;
     RecyclerView recyclerView;
@@ -65,6 +66,8 @@ public class DialyDetailActivity extends AppCompatActivity {
         url = getIntent().getStringExtra("url");
         init();
     }
+
+
 
     private void init() {
         myAdapter = new MyAdapter();

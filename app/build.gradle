@@ -41,4 +41,7 @@ dependencies {
     implementation 'com.android.support:design:29.0.0'
     implementation 'com.android.support:cardview-v7:29.0.1'
     implementation 'org.greenrobot:greendao:3.2.2'
+
+    implementation 'cn.bingoogolapple:bga-swipebacklayout:1.2.0@aar'
+    implementation 'com.jaeger.statusbaruitl:library:1.4.0'
 }

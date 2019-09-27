@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.hik.dialyinterview.db.DBHelper;
 
+import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper;
+
 
 public class DialyApplication extends Application {
 
@@ -13,5 +15,6 @@ public class DialyApplication extends Application {
         super.onCreate();
 
         DBHelper.getInstance().init(this);
+        BGASwipeBackHelper.init(this, null);
     }
 }

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.hik.dialyinterview.BaseActivity;
 import com.hik.dialyinterview.R;
 import com.hik.dialyinterview.bean.KotlinBean;
 import com.hik.dialyinterview.db.KotlinService;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class KotlinLearnActivity extends AppCompatActivity {
+public class KotlinLearnActivity extends BaseActivity {
     List<KotlinBean> kotlinBeanList;
     RecyclerView recyclerView;
     SwipeRefreshLayout refreshLayout;

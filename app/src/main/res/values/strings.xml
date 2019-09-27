@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Android</string>
+    <string name="name">Android</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">zoush</string>
@@ -7,10 +8,11 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">kotlin</string>
+    <string name="menu_home">kotlin学习</string>
     <string name="menu_gallery">Android学习</string>
     <string name="menu_slideshow">Android面试</string>
-    <string name="menu_tools">Tools</string>
-    <string name="menu_share">Share</string>
-    <string name="menu_send">Send</string>
+    <string name="menu_tools">Android源码</string>
+    <string name="menu_share">Android资讯</string>
+    <string name="menu_send">Android</string>
+    <string-array name="title"></string-array>
 </resources>

@@ -20,6 +20,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import com.hik.dialyinterview.BaseActivity;
 import com.hik.dialyinterview.R;
 import com.hik.dialyinterview.activity.androidbasiclearn.AndroidBasicActivity;
 import com.hik.dialyinterview.activity.androidmianshi.AndroidMSActivity;
@@ -54,7 +55,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         dialyBeanList = DialyService.getInstance().loadAll();
+
         init();
     }
 
@@ -122,7 +124,6 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void run() {
                         refreshLayout.setRefreshing(false);
-                        ;
                     }
                 }, 3000);
             }
@@ -327,6 +328,11 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean isSupportSwipeBack() {
+        return false;
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -346,9 +352,9 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
+        }/* else if (id == R.id.nav_send) {
 
-        }
+        }*/
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

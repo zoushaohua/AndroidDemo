@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.hik.dialyinterview.BaseActivity;
 import com.hik.dialyinterview.R;
 import com.hik.dialyinterview.bean.DetailBean;
 import com.hik.dialyinterview.db.DetailService;
@@ -26,7 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class KotlinLearnDetailActivity extends AppCompatActivity {
+public class KotlinLearnDetailActivity extends BaseActivity {
     Toolbar toolbar;
     String url;
     TextView textItem;
