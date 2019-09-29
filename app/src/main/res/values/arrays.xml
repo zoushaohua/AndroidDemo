@@ -1,0 +1,261 @@
+<resources>
+
+    <string-array name="ms_content">
+        <item>"activity生命周期
+一，理解声明周期
+
+  当用户导航，退出，返回时，activity的实例在生命周期中经历不同的状态。Activity类提供了一系列回调方法：系统创建，停止，运行activity或者毁灭进程。
+
+
+
+  在生命周期回调方法内，你可以定义你的activity应该如何表现，当用户离开和再次进入activity时。例如，如果你正在创建一个流媒体视频播放器，你可能暂停再设个视频和终止网络连接当用户转到另一个app。当用户再次返回的时候，你可以重新连接到网络和从上个返回点打开的视频。换句话说，每一个回调方法都能执行特定的工作，来适应不同的变化状态。在正确的时间处理正确的工作和合理的处理不同状态的过渡，使应用程序更加的健壮。例如，生命周期回调方法好的实现可以帮助你的app避免以下的一些错误
+
+当使用你的app接受一个电话或者转到另一个app，程序崩溃
+当用户不积极使用一些资源的时候，消耗合理的系统资源，
+离开你的app再次返回，丢失进度
+屏幕在横向和纵向之间转换时，崩溃和丢失进度。
+
+
+   这个文档在细节上解释了生命周期。通过描述生命周期模式开始这分文档。接下来，将会解释每一个回调方法：当他们执行时什么会发生，并且你应该实现什么在他们之间。简单的介绍这些activity状态和进程易被系统杀死的脆弱性之间的关系。最后，讨论一些在进程之间过渡的话题。
+
+
+二，声明周期的概念
+
+   为了导航不同activity状态之间的过渡，activity的类提供了一些核心回调方法，一共有六个：onCreate(), onStart(),onResume(), onPause(), onStop(), destory().。当activity进入一个新状态的时候，系统会调用他们。
+
+   当用户离开activity时，系统会调用相应的方法进行处理。在一些情况下，activity会进入部分的毁灭（文档是这样说的，可能这个英文理解意思有点误差，做了少量修改，大体意思不变）。Activity仍然运行在内存中，仍然可以返回到之前的窗口。如果用户返回这个activity，activity将会从离开的地方开始运行。系统杀死一个进程的可能性取决于当前activity的状态。后面会介绍activity状态和从内存中弹出之间关系（从内存弹出，不久杀死进程了吗）
+
+
+
+   了解这些状态之间的转化，对如何处理你的app之间的状态转化，有很大的好处。
+
+
+  三，周期回调
+
+  注：写一下刚才对生命周期回调方法的测试小点。
+
+1.      当按下Home键的时，是不会destroy的，只会stop，在后台运行。当按下back的时候，会destroy
+2.      当你主动按下back键时，是不会调用saveInstanceState方法，saveInstanceState方法是在onPause方法后调用。
+3.      当按下back时，例如，从activity1返回到activity2，一般当前activity1会先调用onPause方法，再调用退回的activity2的onRestart—>onStartàonResume，然后再调用activity1的onStopàonDestroy
+4.      就先这些解惑。
+  这一部分提供了概念性的信息和实现信息关于这些回调方法，被用在生命周期中。
+
+  有一些部分，例如调用SetContentView()，在他们的生命周期方法中去调用。然而，实现一个依赖组件的代码应该放在组件它自身中。为了实现这些，你必须让依赖组件实现生命周期意识：ttps://developer.android.google.cn/topic/libraries/architecture/lifecycle.html
+
+
+
+1.      onCreate()
+你必须实现这个回调方法，当系统第一次创建这个activity的时候会调用它。当activity被创建的时候，进入到被创建的状态。在onCreate()方法中，执行基础的启动逻辑，这些逻辑代码只会发生一次在整个activity生命周期中。例如，实现绑定list数据，用viewModel把activity关联起来，实例化一些类变量。这个方法接受一个形参，savedInstanceState，这是一个Bundle对象，包含activity之前的状态。如果activity在此之前不存在，这个Bundle是空的。
+
+
+
+如果你有一个生命周期意识的组件（有生命周期回调方法的组件），和你的activity相关联，那么将会接受一个ON_CREATE事件（自己查，我也看不懂）。用@onLifecycleEvent注解的方法会被调用，于是你的有生命周期意识的组件将会执行任何创建状态需要的设置代码，
+
+
+
+
+
+
+还有另外一种方式定义xml布局文件。你可以创建一个view对象，通过把view对象插入viewGroup创建一个view层次结构。然后传递根viewGroup到setContentView中。
+
+   这里说一下三种设置contentView的方式：
+
+　　　1. 直接传入一个View对象。
+
+２　直接传入一个layout资源ID
+
+３　使用View.inflate方法创建一个View，传入setContentView
+
+2.        onStart()
+当activity进入开始状态时，系统调用这个回调方法。这个方法将会让activity变得用户可见，app会准备进入前端和变得可交互。例如，这个方法初始化维护UI的代码。
+
+
+
+当activity到达开始状态，任何有生命周期意识的组件会和activity的生命周期联系到一起，同时接受一个ON_START事件。
+
+
+
+这个状态会完成的十分快，不会保留太长时间。
+
+3.      OnResume()
+当activity进入到这个运行状态，它涉及到前端，系统会调用onResume回调方法。在这个状态中用户会和app进行交互。当焦点从这个app离开时，才会从这个状态停止。例如，一个电话打进来，用户被引导到另一个app，或者设备屏幕关掉了。
+
+
+
+当activity到达运行状态，任何有生命周期意识的组件会和activity的生命周期联系到一起，同时接受一个ON_Resume事件。这个方法中，生命周期组件可以启动任何在前端运行的功能。例如开启一个相机预览。
+
+注：
+
+这一部分省略，好像设计到androidX的知识，接受的on_resume是lifecycleowner中的常量，用来处理事件的，我功力不够，解释不了，等我明白了再说吧。
+
+
+
+
+
+当一个中断发生，activity会进入暂停状态，系统会调用onPause()。
+
+
+
+如果activity从暂停状态返回到运行状态，会再一次调用onResume()方法。因此，、你应该在onResume方法中初始化你在onPause方法中释放的组件，并且实现当进入运行状态时必须实现的功能。
+
+
+
+在多窗口模式中，你的Activity在pause状态是可能完全可见的。例如在多窗口模式中，用户点击另一个窗口，焦点会跳转到另一个活动中，你的活动就会处于pause状态（在多窗口中，一般用frame实现，比如，左边一个文章列表，右边显示文章内容）。这理由多窗口模式的章节。https://developer.android.google.cn/guide/topics/ui/multi-window.html
+
+
+
+在生命周期方法中初始化资源一定要在相应的生命周期方法中进行释放。
+
+关于如何处理生命周期用生命周期意识组件：：https://developer.android.google.cn/topic/libraries/architecture/lifecycle.html
+
+4.       OnPause()
+
+
+      当用户有离开这个activity迹象的时候，系统会调用这个方法（经历这个生命周      期过程不意味着activity正在毁灭）而是意味着activity不再是位于前端（在多窗口模式下它可能仍然可见）。当处于这个状态，利用onPause方法去暂停或者调整那些不应该继续或应适度的继续的操作，你期望这些操作能够短暂的运行。有几个原因进入到这个状态：
+
+中断发生，这是最常见的情况
+在android 7.0（API 24）或者更高的版本，多个app运行在多窗口模式中。因为只有一个app在某一时刻拥有焦点，系统会暂停其它app
+一个半透明的活动发生，例如dialog。只要是部分可见，他就会处于暂停。
+  当activity到达暂停状态，
+
+
+
+  onPause方法运行是十分的简介，不必花费太多的时间去执行存储操作。由于这个原因，你不应该做一些存储应用和用户数据的操作，网络连接 ，数据库交互。那样的工作可能在onPause方法完成前都不一定做完。你应该在onStop中做一些繁重的加载关闭操作。下面会做一些说明。
+
+
+
+完成onPause方法，也不意味着activity会离开这个状态，而是，这个activity会继续保持这个状态，直到activity再次运行或者完全的对用户不可见。如果activity运行，系统会再次调用onReume方法。，系统会把activity实例保留在内存中，如果activity从pause状态返回到resume状态，当系统调onResume方法时，会再次调用activity实例。在这个场景中，你不需要再次初始化组件。如果组件变得完全不可见，系统会调用onStop方法。
+
+5.       onStop()
+activity对用户完全不可见，就会进入stop状态，系统会调用onStop方法。例如，当一个新启动的activity完全覆盖整个屏幕。当activity终止运行时候也会调用。
+
+
+
+    在这个onStop方法中，app应该释放或者调整不需要的资源。例如，你的app暂停动画播放或者缩小你当前的地图位置。利用onStop方法而不是onPause方法确保与UI相关的工作继续，甚至是在当用户在多窗口中浏览你的activity。
+
+
+
+    你应该利用onStop去存储持久化数据。
+
+
+
+6.       onDestory()
+
+
+在activity被消灭之前调用。调用它的原因：
+
+1.      调用了finish方法
+2.      配置改变，例如屏幕旋转
+ 四 activity状态从内存释放
+
+     当系统需要内存的时候，会把进程杀死。系统杀死一个进程依靠进程当前的状态。而进程的状态依靠activity的状态。Tabel1展示了在进程状态，activity状态和杀死进程的可能性之间的关系。
+
+
+
+  系统不会直接的结束activity去释放内存，系统会直接杀死运行activity的进程。
+
+
+
+  用户可利用settings下的应用管理器杀死进程来结束app的运行。
+
+
+
+
+
+五，存储和恢复临时的UI状态
+
+  当配置改变的时候，用户期望保留activity的UI状态，例如屏幕方向改变和转换到多窗口模式。在默认情况下，当配置改变的时候，系统会销毁activity存储的UI状态。而用户期望保留UI状态，当从一个activity转换到另一个activity。然而，系统可能会销毁你的应用进程当用户离开并且你的activity是stop的时候
+
+
+
+  当activity被毁灭的时候由于系统的限制，你应该结合ViewModel和onSaveInstanceStart，或者当地存储来保存那些临时UI状态。如果想要了解更多的知识，可以看这个 网站：https://developer.android.google.cn/topic/libraries/architecture/saving-states.htmlhttps://developer.android.google.cn/topic/libraries/architecture/saving-states.html
+
+
+
+实例状态：
+   在一些场景中，你的activity是被正常销毁 的，当你按下back或者调用finish方法。当activity是被正常销毁的，activity彻底消失的。用户的期望和系统的行为是相匹配的，你不需要做任何多余的工作。
+
+  然而。如这个activity是由于系统内存不足的原因被销毁的，或者配置被改变，尽管当前activity实例被销毁，系统任然记得这个activity是存在的。如果用户想尝试返回这个activity，系统会创建一个新的实例，使用被保存的数据。
+
+  系统利用被保存的数据去恢复之前的实例状态，状态被保存在Bundle中。在默认情况下，系统使用Bundle实例存储在你activity布局中的v每一个view的状态（例如输入到Edittext组件中的text值）。于是，如果你的activity实例被销毁再被创建，layout的状态会被自动恢复，你不需要再去写代码去请求保存。
+
+  Note：为了默认情况下自动恢复view的状态，你需要为每一个view指定独一无二的ID。通过android:id属性指定。
+
+
+
+  一个Bundle对象不适合保存过多的数据量，因为他在主线程中请求序列化，需要消耗内存。为了保存更多数据，你应该采用结合多个方法保存数据。
+
+
+
+2.       使用onSaveInstance()存储简单的，轻量级UI状态
+
+
+当系统在调用stop方法之前，调用onSaveInstancestate方法，你的activity可以存储状态信息进入bundle实例中。这个方法默认实现保存activity中的view状态。
+
+
+
+       为了存储额外的实例状态信息，你必须重写此方法，增加键值对到bundle对象中。如果你重写onSaveInstanceState方法还想要实现保存view对象的状态，你就得调用超类里面的实现。
+
+
+
+      Note：显示关闭activity或者使用finish结束时不会调用onSaveInstanceState方法的
+
+
+
+    如果存储持久化数据，你应该当你的activity在前台活动的时候找到时机去存储他们。如果没有合适的时机，你应该在stop回调方法中实现他们。
+
+
+
+恢复UI状态使用存储的状态
+当你的activity在被销毁之后重新被创建，你可以恢复存储的数据状态从Bundle对象（系统传递给你的activity的Bundle对象）。OnCreate方法和OnRestoreinstanceState方法都使用同一个Bundle，包含的实例状态信息是一样的（有一个迷惑点，主动退出activity，不会调用onSaveInstanceState方法，不是代表着不能使用Bundle对象存储数据，这个我之前也很有迷惑。搞清楚就好了）
+
+
+
+由于在onCreate方法在创建activity时会被调用，你必须先判断Bundle对象是不是为空。如果是空的，你应该创建一个新的activity，否则就恢复之前被销毁时存储的数据。
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState); // Always call the superclass first
+
+    // Check whether we're recreating a previously destroyed instance
+    if (savedInstanceState != null) {
+        // Restore value of members from saved state
+        mCurrentScore = savedInstanceState.getInt(STATE_SCORE);
+        mCurrentLevel = savedInstanceState.getInt(STATE_LEVEL);
+    } else {
+        // Probably initialize members with default values for a new instance
+    }
+    // ...
+}
+
+
+
+
+
+   你也可以使用onRestoreInstaceState方法，在onStart方法之后调用。这个方法只在有被存储数据才会调用，所以不需要检测是不是空。
+
+   public void onRestoreInstanceState(Bundle savedInstanceState) {
+
+    // Always call the superclass so it can restore the view hierarchy
+
+    super.onRestoreInstanceState(savedInstanceState);
+
+
+
+    // Restore state members from saved instance
+
+    mCurrentScore = savedInstanceState.getInt(STATE_SCORE);
+
+    mCurrentLevel = savedInstanceState.getInt(STATE_LEVEL);
+
+}
+
+
+   小心：一直调用超类的onReStoreInStaceState方法，可以恢复view 的状态。
+
+
+
+ "</item>
+    </string-array>
+
+</resources>

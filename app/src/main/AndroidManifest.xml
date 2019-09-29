@@ -29,6 +29,8 @@
         <activity android:name=".activity.androidbasiclearn.AndroidBasicActivity"/>
         <activity android:name=".activity.androidmianshi.AndroidMSActivity"
             android:label="Android面試題"/>
+        <activity android:name=".activity.androidmianshi.MSDetailActivity"
+            android:label="详解"/>
     </application>
 
 </manifest>

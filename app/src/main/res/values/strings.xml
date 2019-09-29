@@ -14,5 +14,8 @@
     <string name="menu_tools">Android源码</string>
     <string name="menu_share">Android资讯</string>
     <string name="menu_send">Android</string>
-    <string-array name="title"></string-array>
+    <string-array name="ms_title">
+        <item>activity生命周期</item>
+    </string-array>
+
 </resources>
